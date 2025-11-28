@@ -1,0 +1,9 @@
+langchain
+langchain_core
+langchain_openai
+langchain_ollama
+langgraph
+ipykernel
+rich
+json
+load_dotenv
