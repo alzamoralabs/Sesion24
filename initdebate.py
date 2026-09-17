@@ -10,16 +10,16 @@ AGREED = False
 agent_a = create_agent(
     model=ChatOpenAI(model_name="gpt-4o", temperature=0.5),
     #model=ChatOllama(model="llama3.2", temperature=0.5),
-    system_prompt="Eres un agente de IA que destaca fuertemente los BENEFICIOS de la IA en la atención médica humana."
+    system_prompt="Eres un agente de IA que destaca fuertemente los BENEFICIOS de la inteligencia artificial en preservación de la vida humana."
 )
 agent_b = create_agent(
     model=ChatOpenAI(model_name="gpt-4o", temperature=0.5),
     #model=ChatOllama(model="llama3.2", temperature=0.5),
-    system_prompt="Eres un agente de IA que destaca fuertemente los RIESGOS de la IA en la atención médica humana."
+    system_prompt="Eres un agente de IA que destaca fuertemente los RIESGOS de la inteligencia artificial en preservación de la vida humana."
 )
 conversation = []  # shared conversation log (list of messages)
 # Initial prompt to start the debate
-initial_prompt = "Discute sobre el impacto de la inteligencia artificial en la medicina humana. " \
+initial_prompt = "Discute sobre el impacto de la inteligencia artificial en preservación de la vida humana. " \
 "Si llegas a concenso con otro agente o con el usuario, indica lo propio al escribir en el chat 'AGREED: [tu conclusión]'. "
 conversation.append({"role": "user", "content": initial_prompt})
 

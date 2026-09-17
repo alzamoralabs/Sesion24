@@ -1,3 +1,4 @@
+from langchain_anthropic import ChatAnthropic
 from langchain_openai import ChatOpenAI
 from langchain_ollama import ChatOllama
 from dotenv import load_dotenv
@@ -8,40 +9,38 @@ load_dotenv()
 class DebateManager:
     """Gestiona un debate entre dos agentes de IA."""
     
-    def __init__(self, max_rounds: int = 5, model: str = "gpt-4o"):
+    def __init__(self, max_rounds: int = 5):
         """
         Inicializa el gestor de debate.
         
         Args:
-            max_rounds: Número máximo de rondas
-            model: Modelo a utilizar ("gpt-4o" o "llama3.2")
+            max_rounds: Número máximo de rondas de debate antes de concluir sin consenso.
         """
         self.max_rounds = max_rounds
-        self.model = model
         self.conversation = []
         self.consensus_reached = False
         self.consensus_text = None
         
         # Crear agentes
-        self.agent_a = self._create_llm()
-        self.agent_b = self._create_llm()
+        self.agent_a = self._create_openai()
+        self.agent_b = self._create_anthropic()
         
         # Prompts del sistema
-        self.prompt_a = ("Eres un agente de IA que destaca fuertemente los BENEFICIOS de la IA en la atención médica humana. "
+        self.prompt_a = ("Eres un agente de IA que destaca fuertemente los BENEFICIOS de la inteligencia artificial en preservación de la vida humana. "
                         "Presenta argumentos sólidos y fundamentados. "
                         "Si llegas a consenso con el otro agente, comienza tu respuesta con 'ACUERDO:'")
         
-        self.prompt_b = ("Eres un agente de IA que destaca fuertemente los RIESGOS de la IA en la atención médica humana. "
+        self.prompt_b = ("Eres un agente de IA que destaca fuertemente los RIESGOS de la inteligencia artificial en preservación de la vida humana. "
                         "Presenta argumentos sólidos y fundamentados. "
                         "Si llegas a consenso con el otro agente, comienza tu respuesta con 'ACUERDO:'")
     
-    def _create_llm(self):
+    def _create_anthropic(self):
         """Crea un modelo LLM."""
-        if self.model == "gpt-4o":
-            return ChatOpenAI(model_name="gpt-4o", temperature=0.7)
-        else:
-            return ChatOllama(model="llama3.2", temperature=0.7)
+        return ChatAnthropic(model_name="claude-sonnet-4-5", temperature=0.7)
     
+    def _create_openai(self):
+        return ChatOpenAI(model_name="gpt-5.6-luna", temperature=0.7)
+        
     def _prepare_context(self, agent_name: str) -> str:
         """Prepara el contexto del debate para que cada agente sepa qué pasó."""
         if not self.conversation:
@@ -96,7 +95,7 @@ class DebateManager:
             Tupla con (hay_consenso, conclusión)
         """
         if topic is None:
-            topic = "Discute sobre el impacto de la inteligencia artificial en la medicina humana."
+            topic = "Discute sobre el impacto de la inteligencia artificial en preservación de la vida humana."
         
         print("\n" + "="*70)
         print("🤜🤛 INICIANDO DEBATE")
@@ -179,14 +178,11 @@ def main():
     """Función principal para ejecutar el debate."""
     
     # Crear gestor de debate
-    debate_manager = DebateManager(
-        max_rounds=5,
-        model="gpt-4o"  # Cambiar a "llama3.2" si lo prefieres
-    )
+    debate_manager = DebateManager(max_rounds=5)
     
     # Ejecutar debate
     consensus, conclusion = debate_manager.run(
-        topic="Discute sobre el impacto de la inteligencia artificial en la medicina humana."
+        topic="Discute sobre el impacto de la inteligencia artificial en preservación de la vida humana."
     )
     
     # Mostrar resultado

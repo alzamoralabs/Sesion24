@@ -7,3 +7,5 @@ ipykernel
 rich
 json
 load_dotenv
+langchain_tavily
+langchain_anthropic

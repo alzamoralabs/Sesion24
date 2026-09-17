@@ -228,7 +228,12 @@ Colaboren para crear un plan integral y consensuado."""
                 print("-" * 40)
                 print(response)
                 print()
-    
+    state["final_plan"] = llm.invoke([{"type": "system", "content": "resumes historiales de conversación en reportes de planes de marketing estructurados."},
+        {"type": "user", "content": f"""Basado en la conversación completa,
+         sintetiza un plan de marketing integral y consensuado para el banco dirigido a jóvenes viajeros. Sé conciso y enfocado.
+         Incluye: canales de comunicación, propuesta de valor, productos/servicios, estrategia de contenido y métricas de éxito.
+         Aqui el historial completo:\n{json.dumps(state['chat_history'], indent=2)}"""}
+    ]).content
     return state
 
 if __name__ == "__main__":
@@ -242,6 +247,12 @@ if __name__ == "__main__":
     print("-" * 80)
     
     chat_history = final_state.get('chat_history', [])
+    report = final_state.get('final_plan', '')
     for msg in chat_history:
         print(f"\n[{msg['role'].upper()}]")
-        print(msg['content'][:500] + "..." if len(msg['content']) > 500 else msg['content'])
+        ##print(msg['content'][:500] + "..." if len(msg['content']) > 500 else msg['content'])
+        print(msg['content'])
+    
+    print(f"\n📋 PLAN DE MARKETING FINAL:")
+    print("-" * 80)
+    print(report)
